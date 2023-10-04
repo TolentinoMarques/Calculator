@@ -4,12 +4,12 @@ namespace Calculator_API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CalculatorController : ControllerBase
+public class BasicCalculator : ControllerBase
 {
 
-    private readonly ILogger<CalculatorController> _logger;
+    private readonly ILogger<BasicCalculator> _logger;
 
-    public CalculatorController(ILogger<CalculatorController> logger)
+    public BasicCalculator(ILogger<BasicCalculator> logger)
     {
         _logger = logger;
     }
@@ -74,6 +74,18 @@ public class CalculatorController : ControllerBase
         return BadRequest("Invalid Input");
     }
 
+    [HttpGet("squared/{firstNumber}/{secondNumber}")]
+    public IActionResult Rooting(string firstNumber, string secondNumber)
+    {
+
+        if (isNumeric(firstNumber) && isNumeric(secondNumber))
+        {
+            var rooting = Math.Pow(ConvertToDouble(firstNumber), ConvertToDouble(secondNumber));
+            return Ok(rooting.ToString());
+        }
+        return BadRequest("Invalid Input");
+    }
+
     [HttpGet("average/{firstNumber}/{secondNumber}")]
     public IActionResult Average(string firstNumber, string secondNumber)
     {
@@ -85,6 +97,20 @@ public class CalculatorController : ControllerBase
         }
         return BadRequest("Invalid Input");
     }
+
+    [HttpGet("percentage/{firstNumber}/{secondNumber}")]
+    public IActionResult Percentage(string firstNumber, string secondNumber)
+    {
+
+        if (isNumeric(firstNumber) && isNumeric(secondNumber))
+        {
+            var percentage = ((ConvertToDouble(firstNumber) * ConvertToDouble(secondNumber)) / 100);
+            return Ok(percentage.ToString());
+        }
+        return BadRequest("Invalid Input");
+    }
+
+
 
     private bool isNumeric(string strNumber)
     {
